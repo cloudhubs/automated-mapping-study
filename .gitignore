@@ -1,0 +1,6 @@
+*.iml
+.idea/
+downloads/buffer/ieee/*.pdf
+downloads/exports/ieee/*.pdf
+driver/*.exe
+target
