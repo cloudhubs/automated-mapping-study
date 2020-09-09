@@ -1,6 +1,6 @@
-package parser.export;
+package edu.baylor.ecs.ams.parser.export;
 
-import model.BaseModel;
+import edu.baylor.ecs.ams.model.BaseModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class BaseExportParser {
 
-    protected final File getFile(String downloadPath){
+    protected final File getFile(String downloadPath) {
         File dir = new File(downloadPath);
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
@@ -19,13 +19,13 @@ public abstract class BaseExportParser {
         // Find first CSV file
         File lastModifiedFile = null;
         for (File file : files) {
-            if(file.getName().endsWith(".csv")){
+            if (file.getName().endsWith(".csv")) {
                 lastModifiedFile = file;
                 break;
             }
         }
 
-        if(lastModifiedFile == null){
+        if (lastModifiedFile == null) {
             System.err.println("No CSV files found");
             return null;
         }

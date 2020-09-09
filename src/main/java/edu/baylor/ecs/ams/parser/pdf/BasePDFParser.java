@@ -1,6 +1,6 @@
-package parser.pdf;
+package edu.baylor.ecs.ams.parser.pdf;
 
-import model.BaseModel;
+import edu.baylor.ecs.ams.model.BaseModel;
 
 public abstract class BasePDFParser {
 

@@ -1,17 +1,17 @@
-package selenium.impl;
+package edu.baylor.ecs.ams.selenium.impl;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import selenium.SeleniumWrapper;
+import edu.baylor.ecs.ams.selenium.SeleniumWrapper;
 
 public class IEEESeleniumWrapper extends SeleniumWrapper {
 
     private static String IEEE_URL = "https://ieeexplore.ieee.org/Xplore/home.jsp";
     private static String IEEE_DOWNLOAD_PATH = "downloads/exports/ieee";
 
-    public IEEESeleniumWrapper(){
+    public IEEESeleniumWrapper() {
         super(IEEE_DOWNLOAD_PATH);
     }
 

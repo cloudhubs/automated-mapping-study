@@ -1,6 +1,6 @@
-package parser.pdf.impl;
+package edu.baylor.ecs.ams.parser.pdf.impl;
 
-import model.BaseModel;
+import edu.baylor.ecs.ams.model.BaseModel;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.io.RandomAccessBufferedFileInputStream;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -8,7 +8,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import parser.pdf.BasePDFParser;
+import edu.baylor.ecs.ams.parser.pdf.BasePDFParser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ public class IEEEPDFParser extends BasePDFParser {
     // provides a direct PDF link then there are better ways to download.
     private ChromeDriver driver;
 
-    public IEEEPDFParser(){
+    public IEEEPDFParser() {
         // Download PDF to buffer
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> preferences = new Hashtable<String, Object>();
@@ -54,13 +54,13 @@ public class IEEEPDFParser extends BasePDFParser {
         // Find first pdf file
         File lastModifiedFile = null;
         for (File file : files) {
-            if(file.getName().endsWith(".pdf")){
+            if (file.getName().endsWith(".pdf")) {
                 lastModifiedFile = file;
                 break;
             }
         }
 
-        if(lastModifiedFile == null){
+        if (lastModifiedFile == null) {
             System.err.println("No CSV files found");
             return null;
         }
