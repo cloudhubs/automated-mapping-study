@@ -35,4 +35,4 @@ build/
 ### ams
 downloads/buffer/ieee/*.pdf
 downloads/exports/ieee/*.pdf
-driver/*.exe
+driver/chromedriver*
