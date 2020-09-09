@@ -19,9 +19,23 @@ There are a couple prerequisites to cover before running.
 
 Download the `opennlp` trained models for sentence detection and part-of-speech tagging. You can find these two models (trained on various languages) on [opennlp's model page](http://opennlp.sourceforge.net/models-1.5/). For example, you could use the English versions of the [sentence detection](http://opennlp.sourceforge.net/models-1.5/en-sent.bin) and [POS-tagger](http://opennlp.sourceforge.net/models-1.5/en-pos-maxent.bin) models. You'll specify the file paths to these models in the Runner.java.
 
+## Run project
+
+```
+$ mvn spring-boot:run
+```
+
+```
+$ curl --request POST \
+    --url 'http://localhost:8080/query?query=microservice' \
+    --header 'content-type: application/json'
+```
+
 ## Authors
 
 * [**Andrew Walker**](https://github.com/walker76)
+* [**Dipta Das**](https://github.com/diptadas)
+* [**Vincent Bushong**](https://github.com/vinbush)
 
 ## Acknowledgments
 
