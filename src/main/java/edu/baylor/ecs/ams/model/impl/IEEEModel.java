@@ -1,9 +1,9 @@
-package model.impl;
+package edu.baylor.ecs.ams.model.impl;
 
+import edu.baylor.ecs.ams.model.BaseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import model.BaseModel;
 
 import java.util.List;
 

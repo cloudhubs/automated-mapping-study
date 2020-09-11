@@ -1,4 +1,4 @@
-package selenium;
+package edu.baylor.ecs.ams.selenium;
 
 import lombok.Getter;
 import org.openqa.selenium.WebDriver;
@@ -14,11 +14,11 @@ public abstract class SeleniumWrapper {
 
     protected WebDriver webDriver;
 
-    public SeleniumWrapper(WebDriver webDriver){
+    public SeleniumWrapper(WebDriver webDriver) {
         this.webDriver = webDriver;
     }
 
-    public SeleniumWrapper(String downloadPath){
+    public SeleniumWrapper(String downloadPath) {
         HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
         chromePrefs.put("profile.default_content_settings.popups", 0);
         chromePrefs.put("download.default_directory", downloadPath);
@@ -40,7 +40,10 @@ public abstract class SeleniumWrapper {
     }
 
     public abstract SeleniumWrapper toSite();
+
     public abstract SeleniumWrapper sendQuery(String query);
+
     public abstract SeleniumWrapper filterResults();
+
     public abstract SeleniumWrapper exportResults();
 }

@@ -1,26 +1,28 @@
+package edu.baylor.ecs.ams.service;
+
+import edu.baylor.ecs.ams.model.BaseModel;
+import edu.baylor.ecs.ams.parser.export.impl.IEEEExportParser;
+import edu.baylor.ecs.ams.parser.pdf.impl.IEEEPDFParser;
+import edu.baylor.ecs.ams.selenium.SeleniumWrapper;
+import edu.baylor.ecs.ams.selenium.impl.IEEESeleniumWrapper;
 import io.github.crew102.rapidrake.RakeAlgorithm;
 import io.github.crew102.rapidrake.data.SmartWords;
 import io.github.crew102.rapidrake.model.RakeParams;
 import io.github.crew102.rapidrake.model.Result;
-import model.BaseModel;
-import parser.export.impl.IEEEExportParser;
-import parser.pdf.impl.IEEEPDFParser;
-import selenium.SeleniumWrapper;
-import selenium.impl.IEEESeleniumWrapper;
 
 import java.util.List;
 
 public class Runner {
 
-    private static String DRIVER_PATH = "driver\\chromedriver.exe";
+    private static String DRIVER_PATH = "driver/chromedriver";
 
-    public static void main(String[] args) throws Exception {
+    public static void run(String query) throws Exception {
 
         System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
 
         SeleniumWrapper wrapper = new IEEESeleniumWrapper();
         wrapper.toSite()
-                .sendQuery("microservices")
+                .sendQuery(query)
                 .filterResults()
                 .exportResults()
                 .pause(2000) // Wait for download to finish
@@ -44,7 +46,7 @@ public class Runner {
         RakeAlgorithm rakeAlg = new RakeAlgorithm(params, POStaggerURL, SentDetecURL);
 
         List<BaseModel> models = exportParser.parseFile();
-        for(BaseModel model : models){
+        for (BaseModel model : models) {
             String text = pdfParser.parsePDF(model);
             // Call the rake method
             Result result = rakeAlg.rake(text);

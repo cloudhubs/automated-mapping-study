@@ -1,4 +1,4 @@
-package model;
+package edu.baylor.ecs.ams.model;
 
 import lombok.Getter;
 import lombok.Setter;
