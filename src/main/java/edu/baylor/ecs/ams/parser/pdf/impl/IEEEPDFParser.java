@@ -61,7 +61,7 @@ public class IEEEPDFParser extends BasePDFParser {
         }
 
         if (lastModifiedFile == null) {
-            System.err.println("No CSV files found");
+            System.err.println("No PDF files found");
             return null;
         }
 

@@ -24,10 +24,10 @@ public abstract class SeleniumWrapper {
         chromePrefs.put("download.default_directory", downloadPath);
         ChromeOptions options = new ChromeOptions();
         options.setExperimentalOption("prefs", chromePrefs);
-        DesiredCapabilities cap = DesiredCapabilities.chrome();
-        cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
-        cap.setCapability(ChromeOptions.CAPABILITY, options);
-        this.webDriver = new ChromeDriver(cap);
+//        DesiredCapabilities cap = DesiredCapabilities.chrome();
+//        cap.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+//        cap.setCapability(ChromeOptions.CAPABILITY, options);
+        this.webDriver = new ChromeDriver(options);
     }
 
     public SeleniumWrapper pause(long waitTime) throws InterruptedException {

@@ -1,5 +1,6 @@
 package edu.baylor.ecs.ams.model.impl;
 
+import edu.baylor.ecs.ams.dto.MetadataDto;
 import edu.baylor.ecs.ams.model.BaseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,4 +41,17 @@ public class IEEEModel extends BaseModel {
     private String publisher; // "IEEE"
     private String documentIdentifier; // "IEEE Conferences"
 
+    @Override
+    public MetadataDto toDto() {
+        MetadataDto dto = new MetadataDto();
+        dto.setDoi(DOI);
+        dto.setAuthors(authors);
+        dto.setDocumentTitle(documentTitle);
+        dto.setPublicationTitle(publicationTitle);
+        dto.setDate(dateAddedToXplore);
+        dto.setAuthorKeywords(authorKeywords);
+        dto.setISSN(ISSN);
+        dto.setISBNs(ISBNs);
+        return dto;
+    }
 }

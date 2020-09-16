@@ -9,7 +9,7 @@ import edu.baylor.ecs.ams.selenium.SeleniumWrapper;
 public class IEEESeleniumWrapper extends SeleniumWrapper {
 
     private static String IEEE_URL = "https://ieeexplore.ieee.org/Xplore/home.jsp";
-    private static String IEEE_DOWNLOAD_PATH = "downloads/exports/ieee";
+    private static String IEEE_DOWNLOAD_PATH = "/Users/bushong/code/cloudhubs/automated-mapping-study/downloads/exports/ieee";
 
     public IEEESeleniumWrapper() {
         super(IEEE_DOWNLOAD_PATH);
@@ -58,7 +58,7 @@ public class IEEESeleniumWrapper extends SeleniumWrapper {
         journalButton.click();
 
         // Apply the filters
-        WebElement applyButton = new WebDriverWait(this.webDriver, 10)
+        WebElement applyButton = new WebDriverWait(this.webDriver, 20)
                 .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[2]/xpl-search-dashboard/section/div/div[2]/xpl-facet-content-type-migr/div/div[2]/button")));
         applyButton.click();
 
@@ -74,14 +74,22 @@ public class IEEESeleniumWrapper extends SeleniumWrapper {
 
         // /html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/button
 
+        // select only first page of results
+        WebElement selectPageButton = this.webDriver.findElement(By.className("results-actions-selectall-checkbox"));
+        selectPageButton.click();
 
+        // /html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[2]/xpl-export-search-results/button
+        // //*[@id="xplMainContent"]/div[1]/div[1]/ul/li[2]/xpl-export-search-results/button
         // Expand export options
-        WebElement exportButton = this.webDriver.findElement(By.xpath("/html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/button"));
+        // WebElement exportButton = this.webDriver.findElement(By.xpath("/html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/button"));
+        WebElement exportButton = this.webDriver.findElement(By.tagName("xpl-export-search-results"));
         exportButton.click();
 
         // Get the download button and click
+//        WebElement downloadButton = new WebDriverWait(this.webDriver, 10)
+//                .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/ngb-tooltip-window/div[2]/ngb-tabset/div/div/div/div/form/div/button")));
         WebElement downloadButton = new WebDriverWait(this.webDriver, 10)
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/ngb-tooltip-window/div[2]/ngb-tabset/div/div/div/div/form/div/button")));
+                .until(ExpectedConditions.elementToBeClickable(By.className("stats-SearchResults_Download")));
         downloadButton.click();
 
         // Wait for download window to open
