@@ -1,12 +1,15 @@
 package edu.baylor.ecs.ams.model.impl;
 
-import edu.baylor.ecs.ams.dto.MetadataDto;
+import edu.baylor.ecs.ams.model.Keyword;
+import edu.baylor.ecs.ams.model.MetadataModel;
 import edu.baylor.ecs.ams.model.BaseModel;
+import jdk.internal.joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -42,16 +45,16 @@ public class IEEEModel extends BaseModel {
     private String documentIdentifier; // "IEEE Conferences"
 
     @Override
-    public MetadataDto toDto() {
-        MetadataDto dto = new MetadataDto();
+    public MetadataModel toMetadata() {
+        MetadataModel dto = new MetadataModel();
         dto.setDoi(DOI);
-        dto.setAuthors(authors);
+        dto.setAuthors(Strings.join(authors, "; "));
         dto.setDocumentTitle(documentTitle);
         dto.setPublicationTitle(publicationTitle);
         dto.setDate(dateAddedToXplore);
-        dto.setAuthorKeywords(authorKeywords);
-        dto.setISSN(ISSN);
-        dto.setISBNs(ISBNs);
+        dto.setAuthorKeywords(authorKeywords.stream().map(kw -> new Keyword(kw.toLowerCase())).collect(Collectors.toList()));
+        dto.setIssn(ISSN);
+        dto.setIsbns(Strings.join(ISBNs, "; "));
         return dto;
     }
 }
