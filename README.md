@@ -31,6 +31,30 @@ $ curl --request POST \
     --header 'content-type: application/json'
 ```
 
+## Query export endpoint
+
+`POST` to `localhost:8080/queryexport` with the JSON payload (note the escaped double quotes in the query!):
+
+```
+{
+    "query" : "(((\"All Metadata\":Mapping Study) OR \"All Metadata\":Literature Review) AND \"All Metadata\":tool)",
+    "downloadPapers" : false
+}
+```
+
+Of course, switch downloadPapers to `true` to download the PDFs of all the results.
+
+If you use cURL:
+
+```
+curl --location --request POST 'localhost:8080/queryexport' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "query" : "(((\"All Metadata\":Mapping Study) OR \"All Metadata\":Literature Review) AND \"All Metadata\":tool)",
+    "downloadPapers" : false
+}'
+```
+
 ## Authors
 
 * [**Andrew Walker**](https://github.com/walker76)
