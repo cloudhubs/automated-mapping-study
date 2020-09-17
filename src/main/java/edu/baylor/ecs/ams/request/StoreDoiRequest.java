@@ -7,4 +7,5 @@ import lombok.Data;
 public class StoreDoiRequest {
   private String doi;
   private Source source;
+  private Long projectId;
 }

@@ -6,13 +6,26 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import edu.baylor.ecs.ams.selenium.SeleniumWrapper;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class IEEESeleniumWrapper extends SeleniumWrapper {
 
     private static String IEEE_URL = "https://ieeexplore.ieee.org/Xplore/home.jsp";
-    private static String IEEE_DOWNLOAD_PATH = "/Users/bushong/code/cloudhubs/automated-mapping-study/downloads/exports/ieee";
+    private static String IEEE_DOWNLOAD_PATH = "downloads" + File.separator + "exports" + File.separator + "ieee";
+
+    private static String getDownloadPath() {
+        String currentWorkingDir = System.getProperty("user.dir");
+        System.out.println(currentWorkingDir);
+        Path rootPath = Paths.get(currentWorkingDir);
+        Path fullPath = rootPath.resolve(IEEE_DOWNLOAD_PATH);
+        System.out.println(fullPath.toAbsolutePath().toString());
+        return fullPath.toAbsolutePath().toString();
+    }
 
     public IEEESeleniumWrapper() {
-        super(IEEE_DOWNLOAD_PATH);
+        super(getDownloadPath());
     }
 
     @Override
@@ -75,8 +88,8 @@ public class IEEESeleniumWrapper extends SeleniumWrapper {
         // /html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/button
 
         // select only first page of results
-        WebElement selectPageButton = this.webDriver.findElement(By.className("results-actions-selectall-checkbox"));
-        selectPageButton.click();
+//        WebElement selectPageButton = this.webDriver.findElement(By.className("results-actions-selectall-checkbox"));
+//        selectPageButton.click();
 
         // /html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[2]/xpl-export-search-results/button
         // //*[@id="xplMainContent"]/div[1]/div[1]/ul/li[2]/xpl-export-search-results/button

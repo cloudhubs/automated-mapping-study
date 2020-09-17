@@ -2,23 +2,23 @@ package edu.baylor.ecs.ams.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 public class MetadataModel {
   @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String doi;
   private String authors;
   private String documentTitle;
   private String publicationTitle;
   private String date;
-  @ManyToMany
-  private List<Keyword> authorKeywords;
+  @ManyToMany(fetch = FetchType.EAGER)
+  private List<Keyword> authorKeywords = new ArrayList<>();
   private String issn;
   private String isbns;
 

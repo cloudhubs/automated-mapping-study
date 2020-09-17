@@ -38,3 +38,5 @@ downloads/exports/ieee/*.pdf
 driver/*.exe
 driver/chromedriver
 driver/chromedriver*
+
+*.DS_STORE

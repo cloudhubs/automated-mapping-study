@@ -3,7 +3,6 @@ package edu.baylor.ecs.ams.model.impl;
 import edu.baylor.ecs.ams.model.Keyword;
 import edu.baylor.ecs.ams.model.MetadataModel;
 import edu.baylor.ecs.ams.model.BaseModel;
-import jdk.internal.joptsimple.internal.Strings;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,13 +47,13 @@ public class IEEEModel extends BaseModel {
     public MetadataModel toMetadata() {
         MetadataModel dto = new MetadataModel();
         dto.setDoi(DOI);
-        dto.setAuthors(Strings.join(authors, "; "));
+        dto.setAuthors(String.join(";", authors));
         dto.setDocumentTitle(documentTitle);
         dto.setPublicationTitle(publicationTitle);
         dto.setDate(dateAddedToXplore);
         dto.setAuthorKeywords(authorKeywords.stream().map(kw -> new Keyword(kw.toLowerCase())).collect(Collectors.toList()));
         dto.setIssn(ISSN);
-        dto.setIsbns(Strings.join(ISBNs, "; "));
+        dto.setIsbns(String.join("; ", ISBNs));
         return dto;
     }
 }

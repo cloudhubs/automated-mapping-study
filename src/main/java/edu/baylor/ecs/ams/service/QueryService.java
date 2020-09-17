@@ -38,4 +38,16 @@ public class QueryService {
   }
 
 
+  public void exportQuery(String query, boolean downloadFiles) throws IOException, InterruptedException {
+    String IEEEQuery = getIEEEQuery(query);
+
+    // run query
+//    List<BaseModel> results = new ArrayList<>();
+    try {
+      IEEERunner.runQueryExport(IEEEQuery, downloadFiles);
+    } catch (Exception e) {
+      // TODO: better exception
+      throw e;
+    }
+  }
 }
