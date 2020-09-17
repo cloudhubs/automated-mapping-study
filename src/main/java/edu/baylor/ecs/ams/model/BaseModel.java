@@ -9,4 +9,6 @@ public abstract class BaseModel {
 
     protected String pdfLink;
 
+    public abstract MetadataModel toMetadata();
+
 }

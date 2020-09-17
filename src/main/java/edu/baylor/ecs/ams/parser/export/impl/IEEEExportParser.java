@@ -29,22 +29,22 @@ public class IEEEExportParser extends BaseExportParser {
         String str = IOUtils.toString(in);
         in.close();
 
-        str = str.substring(str.indexOf("\n") + 1);
-        str = str.replaceAll(",NA", ",\"NA");
-        str = str.replaceAll("NA,", "NA\",");
-        str = str.replaceAll("([a-zA-Z0-9.áó]+)\",([a-zA-Z0-9.áó]+)", "$1\",\"$2");
-        str = str.replaceAll("([a-zA-Z0-9.áó]+),\"([a-zA-Z0-9.áó]+)", "$1\",\"$2");
-        str = str.replaceAll(",,", ",\"\",");
-        str = str.replaceAll("\",\"", "DELIMITER_A");
-        str = str.replaceAll("\"\n\"", "DELIMITER_B");
-        str = str.replaceAll("\"", "");
-        str = str.replaceAll("\"\"", "");
-        str = str.replaceAll("DELIMITER_A", "\",\"");
-        str = str.replaceAll("DELIMITER_B", "\"\n\"");
-        str = str.concat("\"");
-        str = "\"".concat(str);
-        String header = "\"Document Title\",\"Authors\",\"Author Affiliations\",\"Publication Title\",\"Date Added To Xplore\",\"Publication Year\",\"Volume\",\"Issue\",\"Start Page\",\"End Page\",\"Abstract\",\"ISSN\",\"ISBNs\",\"DOI\",\"Funding Information\",PDF Link,\"Author Keywords\",\"IEEE Terms\",\"INSPEC Controlled Terms\",\"INSPEC Non-Controlled Terms\",\"Mesh_Terms\",\"Article Citation Count\",\"Reference Count\",\"License\",\"Online Date\",\"Issue Date\",\"Meeting Date\",\"Publisher\",\"Document Identifier\"";
-        str = header.concat("\n").concat(str);
+//        str = str.substring(str.indexOf("\n") + 1);
+//        str = str.replaceAll(",NA", ",\"NA");
+//        str = str.replaceAll("NA,", "NA\",");
+//        str = str.replaceAll("([a-zA-Z0-9.áó]+)\",([a-zA-Z0-9.áó]+)", "$1\",\"$2");
+//        str = str.replaceAll("([a-zA-Z0-9.áó]+),\"([a-zA-Z0-9.áó]+)", "$1\",\"$2");
+//        str = str.replaceAll(",,", ",\"\",");
+//        str = str.replaceAll("\",\"", "DELIMITER_A");
+//        str = str.replaceAll("\"\n\"", "DELIMITER_B");
+//        str = str.replaceAll("\"", "");
+//        str = str.replaceAll("\"\"", "");
+//        str = str.replaceAll("DELIMITER_A", "\",\"");
+//        str = str.replaceAll("DELIMITER_B", "\"\n\"");
+//        str = str.concat("\"");
+//        str = "\"".concat(str);
+//        String header = "\"Document Title\",\"Authors\",\"Author Affiliations\",\"Publication Title\",\"Date Added To Xplore\",\"Publication Year\",\"Volume\",\"Issue\",\"Start Page\",\"End Page\",\"Abstract\",\"ISSN\",\"ISBNs\",\"DOI\",\"Funding Information\",PDF Link,\"Author Keywords\",\"IEEE Terms\",\"INSPEC Controlled Terms\",\"INSPEC Non-Controlled Terms\",\"Mesh_Terms\",\"Article Citation Count\",\"Reference Count\",\"License\",\"Online Date\",\"Issue Date\",\"Meeting Date\",\"Publisher\",\"Document Identifier\"";
+//        str = header.concat("\n").concat(str);
 
         Reader reader = new CharSequenceReader(str);
         List<CSVRecord> records = CSVFormat.EXCEL.withIgnoreEmptyLines().withFirstRecordAsHeader().parse(reader).getRecords();

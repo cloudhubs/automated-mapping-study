@@ -1,11 +1,14 @@
 package edu.baylor.ecs.ams.model.impl;
 
+import edu.baylor.ecs.ams.model.Keyword;
+import edu.baylor.ecs.ams.model.MetadataModel;
 import edu.baylor.ecs.ams.model.BaseModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Getter
@@ -40,4 +43,17 @@ public class IEEEModel extends BaseModel {
     private String publisher; // "IEEE"
     private String documentIdentifier; // "IEEE Conferences"
 
+    @Override
+    public MetadataModel toMetadata() {
+        MetadataModel dto = new MetadataModel();
+        dto.setDoi(DOI);
+        dto.setAuthors(String.join(";", authors));
+        dto.setDocumentTitle(documentTitle);
+        dto.setPublicationTitle(publicationTitle);
+        dto.setDate(dateAddedToXplore);
+        dto.setAuthorKeywords(authorKeywords.stream().map(kw -> new Keyword(kw.toLowerCase())).collect(Collectors.toList()));
+        dto.setIssn(ISSN);
+        dto.setIsbns(String.join("; ", ISBNs));
+        return dto;
+    }
 }

@@ -16,7 +16,7 @@ public class Runner {
 
     private static String DRIVER_PATH = "driver/chromedriver";
 
-    public static void run(String query) throws Exception {
+    public static List<BaseModel> run(String query) throws Exception {
 
         System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
 
@@ -53,5 +53,7 @@ public class Runner {
             // Print the result
             System.out.println(result.distinct());
         }
+
+        return null;
     }
 }

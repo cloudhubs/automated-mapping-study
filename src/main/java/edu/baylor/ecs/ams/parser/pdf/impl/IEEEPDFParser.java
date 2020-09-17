@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ams.parser.pdf.impl;
 
 import edu.baylor.ecs.ams.model.BaseModel;
+import edu.baylor.ecs.ams.model.impl.IEEEModel;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.io.RandomAccessBufferedFileInputStream;
 import org.apache.pdfbox.pdfparser.PDFParser;
@@ -12,23 +13,36 @@ import edu.baylor.ecs.ams.parser.pdf.BasePDFParser;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.Map;
 
 public class IEEEPDFParser extends BasePDFParser {
+
+    private static String PDF_DOWNLOAD_PATH = "downloads" + File.separator + "buffer";
 
     // IEEE needs to use Selenium to download file because it serves the file through a .jsp link. If the indexer
     // provides a direct PDF link then there are better ways to download.
     private ChromeDriver driver;
 
     public IEEEPDFParser() {
+        String currentWorkingDir = System.getProperty("user.dir");
+        System.out.println(currentWorkingDir);
+        Path rootPath = Paths.get(currentWorkingDir);
+        Path fullPath = rootPath.resolve(PDF_DOWNLOAD_PATH);
+        String pathString = fullPath.toAbsolutePath().toString();
+        System.out.println(pathString);
+
         // Download PDF to buffer
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> preferences = new Hashtable<String, Object>();
         preferences.put("profile.default_content_settings.popups", 0);
         preferences.put("download.prompt_for_download", false);
         preferences.put("download.directory_upgrade", true);
-        preferences.put("download.default_directory", "downloads\\buffer\\ieee");
+        preferences.put("download.default_directory", pathString);
         preferences.put("plugins.always_open_pdf_externally", true);
 
         options.setExperimentalOption("prefs", preferences);
@@ -38,9 +52,68 @@ public class IEEEPDFParser extends BasePDFParser {
 
     }
 
+    public boolean downloadPDF(BaseModel model) {
+        String url = "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber="
+                + model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + "&ref=";
+        driver.get(url);
+
+        // Renaming is wonky, forget it
+
+//        String pdfName = model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + ".pdf";
+
+//        File dir = new File("downloads" + File.separator + "buffer");
+//        File[] files = dir.listFiles();
+//        if (files == null || files.length == 0) {
+//            System.err.println("No downloaded files found");
+//            return false;
+//        }
+//
+//        // Find first pdf file
+//        File lastModifiedFile = null;
+//        for (File file : files) {
+//            if (file.getName().endsWith(".pdf")) {
+//                lastModifiedFile = file;
+//                break;
+//            }
+//        }
+//
+//        if (lastModifiedFile == null) {
+//            System.err.println("No PDF files found");
+//            return false;
+//        }
+//
+//        File actualFile = null;
+//        System.out.println(files.length);
+//
+//        // Find latest pdf file
+//        for (File file : files) {
+//            if (lastModifiedFile.lastModified() < file.lastModified() && file.getName().endsWith(".pdf")) {
+//                lastModifiedFile = file;
+//            }
+//        }
+//
+//        // rename to the DOI
+//        Path source = lastModifiedFile.toPath();
+//        IEEEModel ieeeModel = (IEEEModel)model;
+//
+//        try{
+//            System.out.println("Trying to move " + source.toString() + " to " + source.resolveSibling(ieeeModel.getDOI().replace("/", "_") + ".pdf"));
+//            // rename a file in the same directory
+//            Path newPath = Files.move(source, source.resolveSibling(ieeeModel.getDOI().replace("/", "_") + ".pdf"));
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("Failed to rename file, skipping");
+//            System.out.println("Failed DOI: " + ieeeModel.getDOI());
+//        }
+
+        return true;
+    }
+
     @Override
     public String parsePDF(BaseModel model) {
-        String url = "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber=" + model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + "&ref=";
+        String url = "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber="
+                + model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + "&ref=";
         driver.get(url);
 
         String parsedText;
@@ -61,7 +134,7 @@ public class IEEEPDFParser extends BasePDFParser {
         }
 
         if (lastModifiedFile == null) {
-            System.err.println("No CSV files found");
+            System.err.println("No PDF files found");
             return null;
         }
 
