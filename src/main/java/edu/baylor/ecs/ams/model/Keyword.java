@@ -11,6 +11,7 @@ public class Keyword {
   @Id
   private String keyword;
 
+  public Keyword() {}
   public Keyword(String keyword) {
     this.setKeyword(keyword);
   }

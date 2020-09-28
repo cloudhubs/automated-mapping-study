@@ -22,8 +22,6 @@ public class QueryController {
 
     @PostMapping("/query")
     public List<MetadataModel> query(@RequestParam String query) throws Exception {
-        log.info("Query: " + query);
-//        Runner.run(query);
         List<BaseModel> models = queryService.runQuery(query);
         List<MetadataModel> results = models.stream().map(m -> m.toMetadata()).collect(Collectors.toList());
         return results;

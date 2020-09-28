@@ -88,8 +88,8 @@ public class IEEESeleniumWrapper extends SeleniumWrapper {
         // /html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[3]/xpl-export-search-results/button
 
         // select only first page of results
-//        WebElement selectPageButton = this.webDriver.findElement(By.className("results-actions-selectall-checkbox"));
-//        selectPageButton.click();
+        WebElement selectPageButton = this.webDriver.findElement(By.className("results-actions-selectall-checkbox"));
+        selectPageButton.click();
 
         // /html/body/div[4]/div/div/div/div[4]/div/xpl-root/div/xpl-search-results/main/div[1]/div[1]/ul/li[2]/xpl-export-search-results/button
         // //*[@id="xplMainContent"]/div[1]/div[1]/ul/li[2]/xpl-export-search-results/button

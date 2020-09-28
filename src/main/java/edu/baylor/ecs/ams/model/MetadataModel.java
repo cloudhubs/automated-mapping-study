@@ -17,7 +17,7 @@ public class MetadataModel {
   private String documentTitle;
   private String publicationTitle;
   private String date;
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Keyword> authorKeywords = new ArrayList<>();
   private String issn;
   private String isbns;

@@ -12,13 +12,15 @@ import io.github.crew102.rapidrake.model.RakeParams;
 import io.github.crew102.rapidrake.model.Result;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class IEEERunner {
-  private static String DRIVER_PATH = "driver/chromedriver";
+  private static String DRIVER_PATH = "driver" + File.separator + "chromedriver"
+          + (System.getProperty("os.name").toLowerCase().contains("windows") ? ".exe" : "");
 
   public static List<BaseModel> runQuery(String query) throws InterruptedException, IOException {
     System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
