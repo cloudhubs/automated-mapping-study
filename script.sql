@@ -1,0 +1,2 @@
+CREATE ROLE amsdev PASSWORD 'amsdev';
+CREATE DATABASE ams OWNER amsdev;

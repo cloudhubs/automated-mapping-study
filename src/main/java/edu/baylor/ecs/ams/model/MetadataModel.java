@@ -12,15 +12,20 @@ public class MetadataModel {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  @Column(unique = true)
   private String doi;
   private String authors;
   private String documentTitle;
   private String publicationTitle;
   private String date;
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
   private List<Keyword> authorKeywords = new ArrayList<>();
   private String issn;
   private String isbns;
+  @Column(nullable = false)
+  private boolean hasFullText;
+  private String fullTextPath;
+  private String pdfLink;
 
 //  public String getDoi() {
 //    return doi;

@@ -54,6 +54,7 @@ public class IEEEModel extends BaseModel {
         dto.setAuthorKeywords(authorKeywords.stream().map(kw -> new Keyword(kw.toLowerCase())).collect(Collectors.toList()));
         dto.setIssn(ISSN);
         dto.setIsbns(String.join("; ", ISBNs));
+        dto.setPdfLink(pdfLink);
         return dto;
     }
 }

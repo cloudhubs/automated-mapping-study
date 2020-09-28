@@ -10,11 +10,12 @@ import io.github.crew102.rapidrake.data.SmartWords;
 import io.github.crew102.rapidrake.model.RakeParams;
 import io.github.crew102.rapidrake.model.Result;
 
+import java.io.File;
 import java.util.List;
 
 public class Runner {
 
-    private static String DRIVER_PATH = "driver/chromedriver";
+    private static String DRIVER_PATH = "driver" + File.separator + "chromedriver";
 
     public static List<BaseModel> run(String query) throws Exception {
 

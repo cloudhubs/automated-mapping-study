@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ams.parser.pdf.impl;
 
 import edu.baylor.ecs.ams.model.BaseModel;
+import edu.baylor.ecs.ams.model.MetadataModel;
 import edu.baylor.ecs.ams.model.impl.IEEEModel;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.io.RandomAccessBufferedFileInputStream;
@@ -57,61 +58,75 @@ public class IEEEPDFParser extends BasePDFParser {
                 + model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + "&ref=";
         driver.get(url);
 
-        // Renaming is wonky, forget it
-
-//        String pdfName = model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + ".pdf";
-
-//        File dir = new File("downloads" + File.separator + "buffer");
-//        File[] files = dir.listFiles();
-//        if (files == null || files.length == 0) {
-//            System.err.println("No downloaded files found");
-//            return false;
-//        }
-//
-//        // Find first pdf file
-//        File lastModifiedFile = null;
-//        for (File file : files) {
-//            if (file.getName().endsWith(".pdf")) {
-//                lastModifiedFile = file;
-//                break;
-//            }
-//        }
-//
-//        if (lastModifiedFile == null) {
-//            System.err.println("No PDF files found");
-//            return false;
-//        }
-//
-//        File actualFile = null;
-//        System.out.println(files.length);
-//
-//        // Find latest pdf file
-//        for (File file : files) {
-//            if (lastModifiedFile.lastModified() < file.lastModified() && file.getName().endsWith(".pdf")) {
-//                lastModifiedFile = file;
-//            }
-//        }
-//
-//        // rename to the DOI
-//        Path source = lastModifiedFile.toPath();
-//        IEEEModel ieeeModel = (IEEEModel)model;
-//
-//        try{
-//            System.out.println("Trying to move " + source.toString() + " to " + source.resolveSibling(ieeeModel.getDOI().replace("/", "_") + ".pdf"));
-//            // rename a file in the same directory
-//            Path newPath = Files.move(source, source.resolveSibling(ieeeModel.getDOI().replace("/", "_") + ".pdf"));
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("Failed to rename file, skipping");
-//            System.out.println("Failed DOI: " + ieeeModel.getDOI());
-//        }
-
         return true;
     }
 
     @Override
     public String parsePDF(BaseModel model) {
+        String url = "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber="
+                + model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + "&ref=";
+        driver.get(url);
+
+        String parsedText;
+        File dir = new File("downloads/buffer");
+        File[] files = dir.listFiles();
+        if (files == null || files.length == 0) {
+            System.err.println("No downloaded files found");
+            return null;
+        }
+
+        // Find first pdf file
+        File lastModifiedFile = null;
+        for (File file : files) {
+            if (file.getName().endsWith(".pdf")) {
+                lastModifiedFile = file;
+                break;
+            }
+        }
+
+        if (lastModifiedFile == null) {
+            System.err.println("No PDF files found");
+            return null;
+        }
+
+        // Find latest pdf file
+        for (File file : files) {
+            if (lastModifiedFile.lastModified() < file.lastModified() && file.getName().endsWith(".pdf")) {
+                lastModifiedFile = file;
+            }
+        }
+
+        PDFParser pdfParser = null;
+        PDDocument pdDoc = null;
+        COSDocument cosDoc = null;
+        PDFTextStripper pdfStripper;
+
+        try {
+            pdfParser = new PDFParser(new RandomAccessBufferedFileInputStream(new FileInputStream(lastModifiedFile)));
+            pdfParser.parse();
+            cosDoc = pdfParser.getDocument();
+            pdfStripper = new PDFTextStripper();
+            pdDoc = new PDDocument(cosDoc);
+            parsedText = pdfStripper.getText(pdDoc);
+            return parsedText.replaceAll("[^A-Za-z0-9. ]+", "");
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                if (cosDoc != null)
+                    cosDoc.close();
+                if (pdDoc != null)
+                    pdDoc.close();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+
+        }
+        driver.close();
+        return null;
+    }
+
+    @Override
+    public String parsePDF(MetadataModel model) {
         String url = "https://ieeexplore.ieee.org/stampPDF/getPDF.jsp?tp=&arnumber="
                 + model.getPdfLink().substring(model.getPdfLink().lastIndexOf("=") + 1) + "&ref=";
         driver.get(url);
