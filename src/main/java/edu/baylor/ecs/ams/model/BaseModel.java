@@ -8,6 +8,7 @@ import lombok.Setter;
 public abstract class BaseModel {
 
     protected String pdfLink;
+    protected String fullTextPath;
 
     public abstract MetadataModel toMetadata();
 

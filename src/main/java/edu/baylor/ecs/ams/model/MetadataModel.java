@@ -25,6 +25,7 @@ public class MetadataModel {
   @Column(nullable = false)
   private boolean hasFullText;
   private String fullTextPath;
+  private String pdfLink;
 
 //  public String getDoi() {
 //    return doi;
