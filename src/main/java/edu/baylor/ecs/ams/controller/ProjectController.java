@@ -29,7 +29,7 @@ public class ProjectController {
   @PostMapping("/{id}/save")
   public List<MetadataModel> saveDoisToProject(@RequestBody List<StoreDoiRequest> requests, @PathVariable Long id) {
     List<MetadataModel> works = doiService.findAllWorksByDois(requests.stream().map(r -> r.getDoi()).collect(Collectors.toList()));
-    projectService.addWorksToProject(works, id);
+    projectService.saveWorksToProject(works, id);
     return works;
   }
 
@@ -38,11 +38,11 @@ public class ProjectController {
     return projectService.getProjectWorks(id);
   }
 
-  @PostMapping("/{id}/query")
+  @PutMapping("/{id}/query")
   public List<MetadataModel> saveQueryToProject(@PathVariable Long id, @RequestBody QueryRequest request) throws IOException, InterruptedException {
     List<BaseModel> models = queryService.runQuery(request.getQuery());
-    List<MetadataModel> results = models.stream().map(m -> m.toMetadata()).collect(Collectors.toList());
-    projectService.addWorksToProject(results, id);
+    List<MetadataModel> works = models.stream().map(m -> m.toMetadata()).collect(Collectors.toList());
+    List<MetadataModel> results = projectService.saveWorksToProject(works, id);
     return results;
   }
 

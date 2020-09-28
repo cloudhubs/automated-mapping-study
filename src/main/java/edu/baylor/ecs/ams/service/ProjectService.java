@@ -9,6 +9,7 @@ import edu.baylor.ecs.ams.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,18 +26,31 @@ public class ProjectService {
     return project.getWorks();
   }
 
-  public void addWorksToProject(List<MetadataModel> works, Long projectId) {
-    Optional<Project> project = projectRepository.findById(projectId);
-    if (project.isPresent()) {
-      Project realProject = project.get();
+  public List<MetadataModel> saveWorksToProject(List<MetadataModel> works, Long projectId) {
+    List<MetadataModel> returnWorks = new ArrayList<>();
+    Optional<Project> optProject = projectRepository.getProjectAndWorksById(projectId);
+    if (optProject.isPresent()) {
+      Project project = optProject.get();
       for (MetadataModel work : works) {
-        work.setAuthorKeywords(keywordRepository.saveAll(work.getAuthorKeywords()));
-        MetadataModel savedWork = metadataRepository.save(work);
-        realProject.addWork(savedWork);
+        // if this project does not contain this work, add it; else skip it
+        if (project.getWorks().stream().noneMatch(w -> w.getDoi().equals(work.getDoi()))) {
+          Optional<MetadataModel> optWork = metadataRepository.getFirstByDoi(work.getDoi());
+          MetadataModel savedWork;
+          // if this work exists in the database, just use it; else, persist it
+          if (optWork.isPresent()) {
+            savedWork = optWork.get();
+          } else {
+            work.setAuthorKeywords(keywordRepository.saveAll(work.getAuthorKeywords()));
+            savedWork = metadataRepository.save(work);
+          }
+          project.addWork(savedWork);
+        }
       }
-      // updates the project and the new works
-      projectRepository.save(realProject);
+      // updates the project
+      project = projectRepository.save(project);
+      returnWorks = project.getWorks();
     }
+    return returnWorks;
   }
 
   public Project createProject(Project model) {

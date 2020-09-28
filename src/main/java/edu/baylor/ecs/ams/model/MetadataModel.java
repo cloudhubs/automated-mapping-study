@@ -12,6 +12,7 @@ public class MetadataModel {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+  @Column(unique = true)
   private String doi;
   private String authors;
   private String documentTitle;
@@ -21,6 +22,9 @@ public class MetadataModel {
   private List<Keyword> authorKeywords = new ArrayList<>();
   private String issn;
   private String isbns;
+  @Column(nullable = false)
+  private boolean hasFullText;
+  private String fullTextPath;
 
 //  public String getDoi() {
 //    return doi;
