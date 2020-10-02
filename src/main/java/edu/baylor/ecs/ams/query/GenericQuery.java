@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ams.model.query;
+package edu.baylor.ecs.ams.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

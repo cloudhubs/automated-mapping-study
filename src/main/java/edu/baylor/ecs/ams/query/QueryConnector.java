@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ams.model.query;
+package edu.baylor.ecs.ams.query;
 
 public enum QueryConnector {
     AND,
