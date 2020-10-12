@@ -45,16 +45,17 @@ public class IEEEModel extends BaseModel {
 
     @Override
     public MetadataModel toMetadata() {
-        MetadataModel dto = new MetadataModel();
-        dto.setDoi(DOI);
-        dto.setAuthors(String.join(";", authors));
-        dto.setDocumentTitle(documentTitle);
-        dto.setPublicationTitle(publicationTitle);
-        dto.setDate(dateAddedToXplore);
-        dto.setAuthorKeywords(authorKeywords.stream().map(kw -> new Keyword(kw.toLowerCase())).collect(Collectors.toList()));
-        dto.setIssn(ISSN);
-        dto.setIsbns(String.join("; ", ISBNs));
-        dto.setPdfLink(pdfLink);
-        return dto;
+        MetadataModel work = new MetadataModel();
+        work.setDoi(DOI);
+        work.setAuthors(String.join(";", authors));
+        work.setDocumentTitle(documentTitle);
+        work.setPublicationTitle(publicationTitle);
+        work.setDate(dateAddedToXplore);
+//        dto.setAuthorKeywords(authorKeywords.stream().map(kw -> new Keyword(kw.toLowerCase())).collect(Collectors.toList()));
+        work.setIssn(ISSN);
+        work.setIsbns(String.join("; ", ISBNs));
+        work.setPdfLink(pdfLink);
+        work.setWorkAbstract(abstractText);
+        return work;
     }
 }
