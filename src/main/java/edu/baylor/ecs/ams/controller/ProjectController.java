@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProjectController {
 
   private final DoiService doiService;
@@ -33,9 +34,17 @@ public class ProjectController {
     return works;
   }
 
+  @GetMapping
+  public List<Project> getProjects() {
+    List<Project> proj = projectService.getAllProjects();
+    proj.stream().forEach(p -> p.setWorks(null)); // TODO: hack
+    return proj;
+  }
+
   @GetMapping("/{id}/works")
   public List<MetadataModel> getProjectWorks(@PathVariable Long id) {
-    return projectService.getProjectWorks(id);
+    List<MetadataModel> works = projectService.getProjectWorks(id);
+    return works;
   }
 
   @PutMapping("/{id}/query")

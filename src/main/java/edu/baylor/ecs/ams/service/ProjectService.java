@@ -26,9 +26,10 @@ public class ProjectService {
   private final ProjectRepository projectRepository;
   private final KeywordRepository keywordRepository;
   private final MetadataRepository metadataRepository;
+  private final TextService textService;
 
   public List<MetadataModel> getProjectWorks(Long projectId) {
-    Project project = projectRepository.findById(projectId).orElse(new Project());
+    Project project = projectRepository.getProjectAndWorksById(projectId).orElse(new Project());
     return project.getWorks();
   }
 
@@ -47,32 +48,47 @@ public class ProjectService {
           if (optWork.isPresent()) {
             savedWork = optWork.get();
           } else {
-            work.setAuthorKeywords(keywordRepository.saveAll(work.getAuthorKeywords()));
+//            work.setAuthorKeywords(keywordRepository.saveAll(work.getAuthorKeywords()));
             savedWork = metadataRepository.save(work);
           }
           project.addWork(savedWork);
         }
       }
 
-      // download full texts if needed
-      if (saveFullText) {
-        IEEEPDFParser pdfParser = new IEEEPDFParser();
-        for (MetadataModel work : project.getWorks()) {
-          if (!work.isHasFullText()) {
-            Path filename = Paths.get("downloads", "fulltext", work.getDoi().replace("/", "_") + ".txt");
-            File textFile = new File(filename.toUri());
-            if (!textFile.exists()) {
-              String fullText = pdfParser.parsePDF(work);
-              FileWriter writer = new FileWriter(textFile);
-              writer.write(fullText);
-              textFile.createNewFile();
-              work.setHasFullText(true);
-              work.setFullTextPath(filename.toAbsolutePath().toString());
-            }
-          }
+      // parse abstracts if needed
+      for (MetadataModel work : project.getWorks()) {
+        if (work.getAbstractKeywords() == null || work.getAbstractKeywords().size() == 0) {
+          List<Keyword> keywords = textService.extractKeywords(work.getWorkAbstract());
+          work.setAbstractKeywords(keywordRepository.saveAll(keywords));
         }
-        project.setWorks(metadataRepository.saveAll(project.getWorks()));
       }
+      project.setWorks(metadataRepository.saveAll(project.getWorks()));
+
+      // skipping full text for now
+//      // download full texts if needed
+//      if (saveFullText) {
+//        IEEEPDFParser pdfParser = new IEEEPDFParser();
+//        for (MetadataModel work : project.getWorks()) {
+//          if (!work.isHasFullText()) {
+//            Path filename = Paths.get("downloads", "fulltext", work.getDoi().replace("/", "_") + ".txt");
+//            File textFile = new File(filename.toUri());
+//            // parse the full text
+//            String fullText = pdfParser.parsePDF(work);
+//            work.setHasFullText(true);
+//            work.setFullTextPath(filename.toAbsolutePath().toString());
+//            // extract keywords
+//            List<Keyword> keywords = textService.extractKeywords(fullText);
+//            work.setExtractedKeywords(keywordRepository.saveAll(keywords));
+//            // create file if it doesn't exist
+//            if (!textFile.exists()) {
+//              FileWriter writer = new FileWriter(textFile);
+//              writer.write(fullText);
+//              textFile.createNewFile();
+//            }
+//          }
+//        }
+//        project.setWorks(metadataRepository.saveAll(project.getWorks()));
+//      }
 
       // updates the project
       project = projectRepository.save(project);
@@ -83,5 +99,9 @@ public class ProjectService {
 
   public Project createProject(Project model) {
     return projectRepository.save(model);
+  }
+
+  public List<Project> getAllProjects() {
+    return projectRepository.findAll();
   }
 }
