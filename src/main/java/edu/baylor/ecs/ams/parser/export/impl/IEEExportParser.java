@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class IEEEExportParser extends BaseExportParser {
+public class IEEExportParser extends BaseExportParser {
 
     public static String IEEE_DOWNLOAD_PATH = "downloads/exports/ieee";
 
