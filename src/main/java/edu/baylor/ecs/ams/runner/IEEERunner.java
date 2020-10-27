@@ -1,15 +1,10 @@
 package edu.baylor.ecs.ams.runner;
 
 import edu.baylor.ecs.ams.model.BaseModel;
-import edu.baylor.ecs.ams.model.impl.IEEEModel;
-import edu.baylor.ecs.ams.parser.export.impl.IEEEExportParser;
+import edu.baylor.ecs.ams.parser.export.impl.IEEExportParser;
 import edu.baylor.ecs.ams.parser.pdf.impl.IEEEPDFParser;
 import edu.baylor.ecs.ams.selenium.SeleniumWrapper;
 import edu.baylor.ecs.ams.selenium.impl.IEEESeleniumWrapper;
-import io.github.crew102.rapidrake.RakeAlgorithm;
-import io.github.crew102.rapidrake.data.SmartWords;
-import io.github.crew102.rapidrake.model.RakeParams;
-import io.github.crew102.rapidrake.model.Result;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -34,7 +29,7 @@ public class IEEERunner {
             .quit();
 
     // parser for downloaded CSV
-    IEEEExportParser exportParser = new IEEEExportParser();
+    IEEExportParser exportParser = new IEEExportParser();
     List<BaseModel> results = new ArrayList<>();
     try {
       results = exportParser.parseFile();
@@ -58,7 +53,7 @@ public class IEEERunner {
             .quit();
 
     // Create IEEE Parsers for exported CSV and the PDFs
-    IEEEExportParser exportParser = new IEEEExportParser();
+    IEEExportParser exportParser = new IEEExportParser();
     IEEEPDFParser pdfParser = new IEEEPDFParser();
 
     List<BaseModel> models = exportParser.parseFile();
