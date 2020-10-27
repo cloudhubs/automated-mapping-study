@@ -28,35 +28,15 @@ public class IEEERunner {
             .pause(2000) // Wait for download to finish
             .quit();
 
-    // parser for downloaded CSV
-    IEEExportParser exportParser = new IEEExportParser();
-    List<BaseModel> results = new ArrayList<>();
-    try {
-      results = exportParser.parseFile();
-    } catch(Exception e) {
-      // TODO: make a better exception type
-      throw e;
-    }
-
-    return results;
+    // parse exported CSV
+    return new IEEExportParser().parseFile();
   }
 
   public static void runQueryExport(String query, boolean downloadFiles) throws InterruptedException, IOException {
-    System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
+    List<BaseModel> models = runQuery(query);
 
-    SeleniumWrapper wrapper = new IEEESeleniumWrapper();
-    wrapper.toSite()
-            .sendQuery(query)
-            .filterResults()
-            .exportResults()
-            .pause(2000) // Wait for download to finish
-            .quit();
-
-    // Create IEEE Parsers for exported CSV and the PDFs
-    IEEExportParser exportParser = new IEEExportParser();
+    // Create IEEE Parsers for downloaded PDFs
     IEEEPDFParser pdfParser = new IEEEPDFParser();
-
-    List<BaseModel> models = exportParser.parseFile();
 
     if (downloadFiles) {
       for (BaseModel model : models) {
