@@ -9,5 +9,4 @@ class AmsApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

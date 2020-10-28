@@ -48,7 +48,7 @@ public class ProjectController {
   }
 
   @PutMapping("/{id}/query")
-  public List<MetadataModel> saveQueryToProject(@PathVariable Long id, @RequestBody QueryRequest request) throws IOException, InterruptedException {
+  public List<MetadataModel> saveQueryToProject(@PathVariable Long id, @RequestBody QueryRequest request) throws Exception {
     List<BaseModel> models = queryService.runQuery(request.getQuery());
     List<MetadataModel> works = models.stream().map(m -> m.toMetadata()).collect(Collectors.toList());
     List<MetadataModel> results = projectService.saveWorksToProject(works, id, request.isDownloadPapers());
