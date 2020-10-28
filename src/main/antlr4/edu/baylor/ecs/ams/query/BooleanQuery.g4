@@ -12,7 +12,7 @@ fragment MULTIPLE_WORDS : [a-zA-Z0-9_ ]+;
 fragment QUOTED_WORDS : QUOTE (SINGLE_WORD | MULTIPLE_WORDS) QUOTE;
 
 OPERATOR : 'AND' | 'OR' | 'NOT';
-SCOPE : ('abstract' | 'title') ':';
+SCOPE : ('abstract' | 'title' | 'fulltext' | 'all') ':';
 WORD : SINGLE_WORD | QUOTED_WORDS;
 SB : '(';
 EB : ')';
