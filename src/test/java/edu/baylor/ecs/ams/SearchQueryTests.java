@@ -6,12 +6,10 @@ import edu.baylor.ecs.ams.query.QueryParser;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
 @Slf4j
 public class SearchQueryTests {
-    
+
     @Test
     void testBooleanQuery() throws Exception {
         String input = "(\"abc fg\" AND \"de\") OR fg NOT 'pqr' AND abstract: mn OR title: (as OR bs)";
