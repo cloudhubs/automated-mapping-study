@@ -22,6 +22,30 @@ public class QueryParserTests {
     }
 
     @Test
+    void testParserScope() {
+        String input = "abstract:   msa";
+        String expectedOutput = "Abstract:msa";
+
+        ParseTree parseTree = QueryParser.parse(input);
+
+        String output = new ACMQueryVisitor().visit(parseTree);
+        log.info(output);
+        assertEquals(output, expectedOutput);
+    }
+
+    @Test
+    void testParserMultipleWords() {
+        String input = " code  smells ";
+        String expectedOutput = "\"code smells\"";
+
+        ParseTree parseTree = QueryParser.parse(input);
+
+        String output = new ACMQueryVisitor().visit(parseTree);
+        log.info(output);
+        assertEquals(output, expectedOutput);
+    }
+
+    @Test
     void testIEEE() {
         String input = "(\"abc fg\" AND \"de\") OR fg NOT 'pqr' AND abstract: mn OR title: (as OR bs)";
         String expectedOutput = "(\"abc fg\" AND \"de\") OR fg NOT 'pqr' AND \"Abstract\":mn OR (\"Document Title\":as OR \"Document Title\":bs)";

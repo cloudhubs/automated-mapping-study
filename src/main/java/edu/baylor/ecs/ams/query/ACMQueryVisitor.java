@@ -1,10 +1,10 @@
 package edu.baylor.ecs.ams.query;
 
-public class ACMQueryVisitor extends BooleanQueryBaseVisitor<String> {
+public class ACMQueryVisitor extends QueryVisitor {
     @Override
     public String visitQuery(BooleanQueryParser.QueryContext ctx) {
         if (ctx.word != null) {
-            String resolved = ctx.word.getText();
+            String resolved = getWords(ctx.word.getText());
             if (ctx.scope != null) {
                 resolved = getScope(ctx.scope.getText()) + resolved;
             }
@@ -21,7 +21,8 @@ public class ACMQueryVisitor extends BooleanQueryBaseVisitor<String> {
         return null;
     }
 
-    private String getScope(String scope) {
+    @Override
+    public String getScope(String scope) {
         switch (scope) {
             case "abstract:":
                 return "Abstract:";

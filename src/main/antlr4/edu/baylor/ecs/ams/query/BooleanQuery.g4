@@ -13,7 +13,7 @@ fragment QUOTED_WORDS : QUOTE (SINGLE_WORD | MULTIPLE_WORDS) QUOTE;
 
 OPERATOR : 'AND' | 'OR' | 'NOT';
 SCOPE : ('abstract' | 'title' | 'fulltext' | 'all') ':';
-WORD : SINGLE_WORD | QUOTED_WORDS;
+WORD : SINGLE_WORD | MULTIPLE_WORDS | QUOTED_WORDS;
 SB : '(';
 EB : ')';
 WS : (' ' | '\t')+ -> channel(HIDDEN);
