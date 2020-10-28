@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @Slf4j
 class IEEETests {
 
@@ -17,7 +19,8 @@ class IEEETests {
     void ieeeSearchQuery() throws IOException, InterruptedException {
         String query = "((\"Abstract\":code smells) AND \"Full Text Only\":microservice)";
         List<BaseModel> results = IEEERunner.runQuery(query);
-        log.info(results.get(0).getPdfLink());
+        log.info(String.valueOf(results));
+        assertTrue(results.size() > 0);
     }
 
 }
