@@ -40,3 +40,4 @@ driver/chromedriver
 driver/chromedriver*
 
 *.DS_STORE
+*.DS_Store
