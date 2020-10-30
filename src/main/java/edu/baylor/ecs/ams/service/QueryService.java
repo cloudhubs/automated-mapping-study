@@ -1,7 +1,12 @@
 package edu.baylor.ecs.ams.service;
 
 import edu.baylor.ecs.ams.model.BaseModel;
+import edu.baylor.ecs.ams.query.ACMQueryVisitor;
+import edu.baylor.ecs.ams.query.IEEEQueryVisitor;
+import edu.baylor.ecs.ams.query.QueryParser;
 import edu.baylor.ecs.ams.runner.IEEERunner;
+import lombok.extern.slf4j.Slf4j;
+import org.antlr.v4.runtime.tree.ParseTree;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -9,45 +14,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class QueryService {
-  public List<BaseModel> runQuery(String query) throws IOException, InterruptedException {
-    // check cache
+  public List<BaseModel> runQuery(String query) throws Exception {
+    // TODO: check cache
 
     // convert to different formats
-    // TODO: conversion from base query to different types
-    String IEEEQuery = getIEEEQuery(query);
+    // TODO: better exception handling
+    ParseTree parseTree = QueryParser.parse(query);
 
-    // run query
-    List<BaseModel> results = new ArrayList<>();
-    try {
-     results = IEEERunner.runQuery(IEEEQuery);
-    } catch (Exception e) {
-      // TODO: better exception
-      throw e;
-    }
+    String ieeeQuery = new IEEEQueryVisitor().visit(parseTree);
+    log.info(ieeeQuery);
+    // String acmQuery = new ACMQueryVisitor().visit(parseTree);
 
-    // concatenate from different sources
+    // TODO: concatenate results from different sources
+    // TODO: better exception handling
 
-    return results;
+    return IEEERunner.runQuery(ieeeQuery);
 
   }
 
-  private String getIEEEQuery(String baseQuery) {
-    // TODO: do conversion
-    return baseQuery;
-  }
 
+  public void exportQuery(String query, boolean downloadFiles) throws Exception {
+    // TODO: check cache
 
-  public void exportQuery(String query, boolean downloadFiles) throws IOException, InterruptedException {
-    String IEEEQuery = getIEEEQuery(query);
+    // convert to different formats
+    // TODO: better exception handling
+    ParseTree parseTree = QueryParser.parse(query);
 
-    // run query
-//    List<BaseModel> results = new ArrayList<>();
-    try {
-      IEEERunner.runQueryExport(IEEEQuery, downloadFiles);
-    } catch (Exception e) {
-      // TODO: better exception
-      throw e;
-    }
+    String ieeeQuery = new IEEEQueryVisitor().visit(parseTree);
+    log.info(ieeeQuery);
+    // String acmQuery = new ACMQueryVisitor().visit(parseTree);
+
+    // TODO: concatenate from different sources
+    // TODO: better exception handling
+
+    IEEERunner.runQueryExport(ieeeQuery, downloadFiles);
   }
 }

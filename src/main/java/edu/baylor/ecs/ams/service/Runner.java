@@ -1,7 +1,7 @@
 package edu.baylor.ecs.ams.service;
 
 import edu.baylor.ecs.ams.model.BaseModel;
-import edu.baylor.ecs.ams.parser.export.impl.IEEEExportParser;
+import edu.baylor.ecs.ams.parser.export.impl.IEEExportParser;
 import edu.baylor.ecs.ams.parser.pdf.impl.IEEEPDFParser;
 import edu.baylor.ecs.ams.selenium.SeleniumWrapper;
 import edu.baylor.ecs.ams.selenium.impl.IEEESeleniumWrapper;
@@ -30,7 +30,7 @@ public class Runner {
                 .quit();
 
         // Create IEEE Parsers for exported CSV and the PDFs
-        IEEEExportParser exportParser = new IEEEExportParser();
+        IEEExportParser exportParser = new IEEExportParser();
         IEEEPDFParser pdfParser = new IEEEPDFParser();
 
         // Create an object to hold algorithm parameters
