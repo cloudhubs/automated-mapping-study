@@ -20,6 +20,11 @@ const ProjectService = {
     async addQueryToProject(id: number, query: string) {
         const res = await axiosInstance.put<Work[]>(`/project/${id}/query`, {query: query, downloadPapers: true});
         return res.data;
+    },
+
+    async createProject(title: string) {
+        const res = await axiosInstance.post<Project>(`/project/`, {title: title});
+        return res.data;
     }
 }
 
