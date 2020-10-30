@@ -64,31 +64,30 @@ public class ProjectService {
       }
       project.setWorks(metadataRepository.saveAll(project.getWorks()));
 
-      // skipping full text for now
-//      // download full texts if needed
-//      if (saveFullText) {
-//        IEEEPDFParser pdfParser = new IEEEPDFParser();
-//        for (MetadataModel work : project.getWorks()) {
-//          if (!work.isHasFullText()) {
-//            Path filename = Paths.get("downloads", "fulltext", work.getDoi().replace("/", "_") + ".txt");
-//            File textFile = new File(filename.toUri());
-//            // parse the full text
-//            String fullText = pdfParser.parsePDF(work);
-//            work.setHasFullText(true);
-//            work.setFullTextPath(filename.toAbsolutePath().toString());
-//            // extract keywords
-//            List<Keyword> keywords = textService.extractKeywords(fullText);
-//            work.setExtractedKeywords(keywordRepository.saveAll(keywords));
-//            // create file if it doesn't exist
-//            if (!textFile.exists()) {
-//              FileWriter writer = new FileWriter(textFile);
-//              writer.write(fullText);
-//              textFile.createNewFile();
-//            }
-//          }
-//        }
-//        project.setWorks(metadataRepository.saveAll(project.getWorks()));
-//      }
+      // download full texts if needed
+      if (saveFullText) {
+        IEEEPDFParser pdfParser = new IEEEPDFParser();
+        for (MetadataModel work : project.getWorks()) {
+          if (!work.isHasFullText()) {
+            Path filename = Paths.get("downloads", "fulltext", work.getDoi().replace("/", "_") + ".txt");
+            File textFile = new File(filename.toUri());
+            // parse the full text
+            String fullText = pdfParser.parsePDF(work);
+            work.setHasFullText(true);
+            work.setFullTextPath(filename.toAbsolutePath().toString());
+            // extract keywords
+            List<Keyword> keywords = textService.extractKeywords(fullText);
+            work.setExtractedKeywords(keywordRepository.saveAll(keywords));
+            // create file if it doesn't exist
+            if (!textFile.exists()) {
+              FileWriter writer = new FileWriter(textFile);
+              writer.write(fullText);
+              textFile.createNewFile();
+            }
+          }
+        }
+        project.setWorks(metadataRepository.saveAll(project.getWorks()));
+      }
 
       // updates the project
       project = projectRepository.save(project);

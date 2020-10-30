@@ -40,19 +40,19 @@ public class TextService {
     if (text == null || text.isBlank()) {
       return keywords;
     }
-    Result result = rakeAlg.rake(text);
-    // Print the result
-    System.out.println(result.distinct());
-    for (int i = 0; i < result.distinct().getFullKeywords().length; i++) {
-      if (result.distinct().getScores()[i] > 1.5) {
-        String word = result.distinct().getFullKeywords()[i];
-        keywords.add(new Keyword(word.substring(0, Math.min(word.length(), 255)).toLowerCase()));
-      }
-    }
-    return keywords;
-//    return Arrays
-//            .stream(result.distinct().getFullKeywords())
-//            .map(s -> new Keyword(s.substring(0, Math.min(s.length(), 255)).toLowerCase())) // truncate keywords and lowercase them
-//            .collect(Collectors.toList());
+    Result result = rakeAlg.rake(text).distinct();
+    String[] fullKeywords = result.getFullKeywords();
+//    float[] scores = result.getScores();
+//    for (int i = 0; i < fullKeywords.length; i++) {
+//      if (scores[i] > 1.5) {
+//        String word = fullKeywords[i];
+//        keywords.add(new Keyword(word.substring(0, Math.min(word.length(), 255)).toLowerCase()));
+//      }
+//    }
+//    return keywords;
+    return Arrays
+            .stream(fullKeywords)
+            .map(s -> new Keyword(s.substring(0, Math.min(s.length(), 255)).toLowerCase())) // truncate keywords and lowercase them
+            .collect(Collectors.toList());
   }
 }
