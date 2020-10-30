@@ -108,7 +108,7 @@ public class IEEEPDFParser extends BasePDFParser {
             pdfStripper = new PDFTextStripper();
             pdDoc = new PDDocument(cosDoc);
             parsedText = pdfStripper.getText(pdDoc);
-            return parsedText.replaceAll("[^A-Za-z0-9. ]+", "");
+            return parsedText.replaceAll("[^A-Za-z0-9.\n ]+", "");
         } catch (Exception e) {
             e.printStackTrace();
             try {
@@ -172,7 +172,7 @@ public class IEEEPDFParser extends BasePDFParser {
             pdfStripper = new PDFTextStripper();
             pdDoc = new PDDocument(cosDoc);
             parsedText = pdfStripper.getText(pdDoc);
-            return parsedText.replaceAll("[^A-Za-z0-9. ]+", "");
+            return parsedText.replaceAll("[^A-Za-z0-9.\n ]+", "");
         } catch (Exception e) {
             e.printStackTrace();
             try {
