@@ -67,13 +67,11 @@ public class ScienceDirectRunner {
         List<BaseModel> results = new ArrayList<>();
 
         // loop through pages, each page contains maximum 100 records
-        int offset = 0;
-
         while (true) {
             ResponseEntity<SDModel> response = restTemplate.exchange(
                     uri,
                     HttpMethod.PUT,
-                    getRequestEntity(query, offset),
+                    getRequestEntity(query, results.size()),
                     SDModel.class
             );
 
@@ -90,8 +88,6 @@ public class ScienceDirectRunner {
             if (results.size() >= sdModel.getResultsFound()) {
                 break;
             }
-
-            offset++;
         }
 
         return results;
