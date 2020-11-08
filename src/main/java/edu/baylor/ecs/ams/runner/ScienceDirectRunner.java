@@ -3,22 +3,24 @@ package edu.baylor.ecs.ams.runner;
 import edu.baylor.ecs.ams.model.BaseModel;
 import edu.baylor.ecs.ams.model.sdapi.meta.SDMetaModel;
 import edu.baylor.ecs.ams.model.sdapi.search.SDModel;
+import edu.baylor.ecs.ams.parser.pdf.impl.SDPDFParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 public class ScienceDirectRunner {
-//    private static String DRIVER_PATH = "driver" + File.separator + "chromedriver"
-//            + (System.getProperty("os.name").toLowerCase().contains("windows") ? ".exe" : "");
+    private static String DRIVER_PATH = "driver" + File.separator + "chromedriver"
+            + (System.getProperty("os.name").toLowerCase().contains("windows") ? ".exe" : "");
 
     public static List<BaseModel> runQuery(String query) {
-//        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
+        System.setProperty("webdriver.chrome.driver", DRIVER_PATH);
 
         String apiKey = System.getenv("SD_API_KEY");
         if (apiKey != null && !apiKey.isEmpty()) {
@@ -43,18 +45,18 @@ public class ScienceDirectRunner {
 //        return new IEEExportParser().parseFile();
     }
 
-//    public static void runQueryExport(String query, boolean downloadFiles) throws InterruptedException, IOException {
-//        List<BaseModel> models = runQuery(query);
-//
-//        // Create ScienceDirect Parsers for downloaded PDFs
-//        SDPDFParser pdfParser = new SDPDFParser();
-//
-//        if (downloadFiles) {
-//            for (BaseModel model : models) {
-//                pdfParser.downloadPDF(model);
-//            }
-//        }
-//    }
+    public static void runQueryExport(String query, boolean downloadFiles) {
+        List<BaseModel> models = runQuery(query);
+
+        // Create ScienceDirect Parsers for downloaded PDFs
+        SDPDFParser pdfParser = new SDPDFParser();
+
+        if (downloadFiles) {
+            for (BaseModel model : models) {
+                pdfParser.downloadPDF(model);
+            }
+        }
+    }
 
     // https://dev.elsevier.com/documentation/ScienceDirectSearchAPI.wadl
     public static List<BaseModel> sdAPIQuery(String apiKey, String query) {
