@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ams.model.sdapi;
+package edu.baylor.ecs.ams.model.sdapi.search;
 
 import lombok.Getter;
 import lombok.Setter;

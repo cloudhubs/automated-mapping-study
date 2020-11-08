@@ -1,4 +1,4 @@
-package edu.baylor.ecs.ams.model.sdapi;
+package edu.baylor.ecs.ams.model.sdapi.search;
 
 import edu.baylor.ecs.ams.model.BaseModel;
 import edu.baylor.ecs.ams.model.MetadataModel;
@@ -37,7 +37,7 @@ public class Article extends BaseModel {
 //        work.setWorkAbstract(abstractProp);
 
         work.setAuthors(authors.stream().map(
-                edu.baylor.ecs.ams.model.sdapi.Author::getName
+                Author::getName
                 ).collect(Collectors.joining(";"))
         );
 
