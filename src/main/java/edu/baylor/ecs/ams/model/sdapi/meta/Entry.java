@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Arrays;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Getter
@@ -72,7 +73,7 @@ public class Entry extends BaseModel {
         }
 
         if (authorKeywords != null) {
-            work.setAuthorKeywords(Arrays.stream(authorKeywords.split(" | ")).map(
+            work.setAuthorKeywords(Arrays.stream(authorKeywords.split(Pattern.quote(" | "))).map(
                     kw -> new Keyword(kw.toLowerCase())
                     ).collect(Collectors.toList())
             );
