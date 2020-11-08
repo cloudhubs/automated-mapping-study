@@ -20,17 +20,17 @@ class SearchQueryTests {
     void ieeeSearchQuery() throws IOException, InterruptedException {
         String query = "((\"Abstract\":code smells) AND \"Full Text Only\":microservice)";
         List<BaseModel> results = IEEERunner.runQuery(query);
-        log.info(String.valueOf(results));
         assertTrue(results.size() > 0);
+        log.info(String.valueOf(results.get(0).toMetadata()));
     }
 
     @Disabled
     @Test
     void sdSearchQuery() {
-        String query = "microservice code smell";
+        String query = "keywords(microservice) AND keywords(container)";
         List<BaseModel> results = ScienceDirectRunner.runQuery(query);
-        log.info(String.valueOf(results.size()));
         assertTrue(results.size() > 0);
+        log.info(String.valueOf(results.get(0).toMetadata()));
     }
 
 }
