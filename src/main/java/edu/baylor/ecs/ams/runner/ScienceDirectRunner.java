@@ -1,6 +1,7 @@
 package edu.baylor.ecs.ams.runner;
 
 import edu.baylor.ecs.ams.model.BaseModel;
+import edu.baylor.ecs.ams.model.sdapi.meta.Entry;
 import edu.baylor.ecs.ams.model.sdapi.meta.SDMetaModel;
 import edu.baylor.ecs.ams.model.sdapi.search.SDModel;
 import edu.baylor.ecs.ams.parser.pdf.impl.SDPDFParser;
@@ -117,8 +118,13 @@ public class ScienceDirectRunner {
 
             SDMetaModel sdMetaModel = restTemplate.getForObject(uri, SDMetaModel.class);
 
-            if (sdMetaModel == null) {
+            if (sdMetaModel == null || sdMetaModel.getSearchResults() == null) {
                 break;
+            }
+
+            for (Entry entry : sdMetaModel.getSearchResults().getEntries()) {
+                entry.setPdfLink(entry.toMetadata().getPdfLink());
+                results.add(entry);
             }
 
             results.addAll(sdMetaModel.getSearchResults().getEntries());

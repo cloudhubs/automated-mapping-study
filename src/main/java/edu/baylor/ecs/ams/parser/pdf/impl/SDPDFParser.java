@@ -47,8 +47,8 @@ public class SDPDFParser extends BasePDFParser {
     }
 
     public boolean downloadPDF(BaseModel model) {
-        log.info("Downloading pdf: " + model.toMetadata().getPdfLink());
-        driver.get(model.toMetadata().getPdfLink());
+        log.info("Downloading pdf: " + model.getPdfLink());
+        driver.get(model.getPdfLink());
         return true;
     }
 

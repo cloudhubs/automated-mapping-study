@@ -33,6 +33,7 @@ class SearchQueryTests {
         log.info(String.valueOf(results.get(0).toMetadata()));
     }
 
+    @Disabled
     @Test
     void sdSearchQueryExport() {
         String query = "keywords(microservice) AND keywords(container)";
