@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,9 @@ public class Entry extends BaseModel {
     @JsonProperty("prism:url")
     String uri;
 
+    @JsonProperty("link")
+    List<Link> links;
+
     @JsonProperty("authors")
     AuthorsWrapper authorsWrapper;
 
@@ -63,7 +67,10 @@ public class Entry extends BaseModel {
         work.setWorkAbstract(description);
 
 //        work.setIsbns(isbn);
-//        work.setPdfLink(pdfUrl);
+
+        if (links != null && links.size() > 0) {
+            work.setPdfLink(links.get(0).href + "/pdf");
+        }
 
         if (authorsWrapper != null && authorsWrapper.getAuthors() != null) {
             work.setAuthors(authorsWrapper.getAuthors().stream().map(
