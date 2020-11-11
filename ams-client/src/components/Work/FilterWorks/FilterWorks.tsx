@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const FilterWorks: React.FC<{projectId: number, keywords: string[], keywordsLoading: boolean, filter: (keywords: Set<string>) => void}> = ({projectId, keywords, keywordsLoading, filter}) => {
+const FilterWorks: React.FC<{projectId: number, keywords: string[], keywordsLoading: boolean, filter: (keywords: Set<string>) => void, resetFilter: () => void}> = ({projectId, keywords, keywordsLoading, filter, resetFilter}) => {
   const classes=useStyles();
   const [currentKeyword, setCurrentKeyword] = useState<string | null>(null);
   const [selectedKeywords, setSelectedKeywords] = useState<Set<string>>(new Set());
@@ -31,12 +31,6 @@ const FilterWorks: React.FC<{projectId: number, keywords: string[], keywordsLoad
       setCurrentKeyword(null);
       updateText();
     }
-  }
-
-  const getKeywordText = async () => {
-    let retStr = "";
-    selectedKeywords.forEach(s => retStr += s + ", ");
-    return retStr;
   }
 
   const updateText = async () => {
@@ -82,6 +76,11 @@ const FilterWorks: React.FC<{projectId: number, keywords: string[], keywordsLoad
           </Box>
           <Button onClick={() => filter(selectedKeywords)} variant="contained" color="primary">
               Apply Filters
+          </Button>
+          <br></br>
+          <br></br>
+          <Button onClick={resetFilter} variant="contained" color="default">
+              Reset Filter
           </Button>
         </Grid>
       </Grid>

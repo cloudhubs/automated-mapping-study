@@ -46,14 +46,26 @@ const WorkPage: React.FC = () => {
     setKeywordsLoading(true); // keywords not yet loaded
     const res = await ProjectService.getProjectWorks(projectId);
     setWorks(res);
+    setFilteredWorks(res);
     extractKeywords(res);
   };
   const addQuery = async (query: string) => {
     await ProjectService.addQueryToProject(id, query);
     loadData(id);
   }
-  const filter = async (keywords: Set<string>) => {
-    setFilteredWorks(works.filter(w => w.abstractKeywords.filter))
+  const filter = async (keywordsToFind: Set<string>) => {
+    setFilteredWorks(works.filter(w => {
+      const workKeys = new Set(w.abstractKeywords.map(k => k.keyword));
+      for (const elem of Array.from(keywordsToFind)) {
+        if (!workKeys.has(elem)) {
+            return false; // one of the keywords not found
+        }
+      }
+      return true;
+    }));
+  }
+  const resetFilter = async () => {
+    setFilteredWorks(works);
   }
   const extractKeywords = async (works: Work[]) => {
     setKeywords(works.flatMap(w => w.extractedKeywords.map(k => k.keyword)).sort().getUnique());
@@ -104,11 +116,11 @@ const WorkPage: React.FC = () => {
           <Typography>
             Filter results by keywords.
           </Typography>
-          <FilterWorks projectId={id} keywords={keywords} keywordsLoading={keywordsLoading} filter={filter} />
+          <FilterWorks projectId={id} keywords={keywords} keywordsLoading={keywordsLoading} filter={filter} resetFilter={resetFilter} />
         </AccordionDetails>
       </Accordion>
 
-      <WorkList works={works} />
+      <WorkList works={filteredWorks} />
     </div>
   );
 };
