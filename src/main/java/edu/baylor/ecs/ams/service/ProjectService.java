@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,16 +40,16 @@ public class ProjectService {
     if (optProject.isPresent()) {
       Project project = optProject.get();
       for (MetadataModel work : works) {
-
         // if this project does not contain this work, add it; else skip it
-        if (project.getWorks().stream().noneMatch(w -> w.getDoi().equals(work.getDoi()))) {
+        if (work.getDoi() != null ? project.getWorks().stream().noneMatch(w -> work.getDoi().equals(w.getDoi()))
+                                  : project.getWorks().stream().noneMatch(w -> work.getDocumentTitle().equals(w.getDocumentTitle()))) {
           Optional<MetadataModel> optWork = metadataRepository.getFirstByDoi(work.getDoi());
           MetadataModel savedWork;
           // if this work exists in the database, just use it; else, persist it
           if (optWork.isPresent()) {
             savedWork = optWork.get();
           } else {
-//            work.setAuthorKeywords(keywordRepository.saveAll(work.getAuthorKeywords()));
+            work.setAuthorKeywords(keywordRepository.saveAll(work.getAuthorKeywords()));
             savedWork = metadataRepository.save(work);
           }
           project.addWork(savedWork);
@@ -69,7 +70,7 @@ public class ProjectService {
         IEEEPDFParser pdfParser = new IEEEPDFParser();
         for (MetadataModel work : project.getWorks()) {
           if (!work.isHasFullText()) {
-            Path filename = Paths.get("downloads", "fulltext", work.getDoi().replace("/", "_") + ".txt");
+            Path filename = Paths.get("downloads", "fulltext", (work.getDoi() != null ? work.getDoi().replace("/", "_") : Instant.now().toString()) + ".txt");
             File textFile = new File(filename.toUri());
             // parse the full text
             String fullText = pdfParser.parsePDF(work);
@@ -103,4 +104,5 @@ public class ProjectService {
   public List<Project> getAllProjects() {
     return projectRepository.findAll();
   }
+
 }

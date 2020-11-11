@@ -131,17 +131,21 @@ public class Article extends BaseModel {
         work.setPdfLink(pdfUrl);
         work.setWorkAbstract(abstractProp);
 
-        work.setAuthors(authors.getAuthors()
-                .stream().map(
-                        Author::getFullName
-                ).collect(Collectors.joining(";"))
-        );
+        if (authors.getAuthors() != null) {
+            work.setAuthors(authors.getAuthors()
+                    .stream().map(
+                            Author::getFullName
+                    ).collect(Collectors.joining(";"))
+            );
+        }
 
-        work.setAuthorKeywords(indexTerms.getAuthorTerms().getTerms()
-                .stream().map(
-                        kw -> new Keyword(kw.toLowerCase())
-                ).collect(Collectors.toList())
-        );
+        if (indexTerms.getAuthorTerms() != null) {
+            work.setAuthorKeywords(indexTerms.getAuthorTerms().getTerms()
+                    .stream().map(
+                            kw -> new Keyword(kw.toLowerCase())
+                    ).collect(Collectors.toList())
+            );
+        }
 
         return work;
     }
