@@ -22,6 +22,7 @@ import FilterWorks from '../FilterWorks/FilterWorks';
 import WorkList from '../WorkList/WorkList';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import Box from '@material-ui/core/Box/Box';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,9 +98,6 @@ const WorkPage: React.FC = () => {
           <Typography>Add Query to Project</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Add the results of a new query to this project.
-          </Typography>
           <AddQuery projectId={id} addQuery={addQuery} />
         </AccordionDetails>
       </Accordion>

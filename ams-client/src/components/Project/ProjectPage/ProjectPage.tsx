@@ -4,6 +4,7 @@ import { Button, TextField } from '@material-ui/core';
 import { Project } from '../../../model/Project';
 import ProjectService from '../../../service/ProjectService';
 import ProjectList from '../ProjectList/ProjectList';
+import Box from '@material-ui/core/Box/Box';
 
 const ProjectPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -14,6 +15,7 @@ const ProjectPage: React.FC = () => {
   const [title, setTitle] = useState("");
   const createProject = async (title: string) => {
     await ProjectService.createProject(title);
+    loadData();
   };
 
   useEffect(() => {
@@ -23,9 +25,9 @@ const ProjectPage: React.FC = () => {
 
   return (
     <div>
-      <TextField label="Project Title" variant="filled" value={title} onChange={(e) => setTitle(e.target.value)}/>
+      <Box mb="2"><TextField label="Project Title" variant="filled" value={title} onChange={(e) => setTitle(e.target.value)}/></Box>
       <Button onClick={() => createProject(title)} variant="contained" color="primary">
-          Add Query to Project
+          Create Project
       </Button>
       <ProjectList projects={projects}/>
     </div>
