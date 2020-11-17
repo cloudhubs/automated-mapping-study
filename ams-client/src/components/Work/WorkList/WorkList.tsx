@@ -39,7 +39,7 @@ const GetRows = (works: Work[]): RowsProp => {
 
 
 
-const WorkList: React.FC<{works: Work[]}> = ({works}) => {
+const WorkList: React.FC<{works: Work[], worksLoading: boolean,}> = ({works, worksLoading}) => {
   // modal stuff
   const [open, setOpen] = React.useState(false);
   const [currentRow, setCurrentRow] = React.useState<RowParams>();
@@ -69,7 +69,7 @@ const WorkList: React.FC<{works: Work[]}> = ({works}) => {
   return (
     <div>
     &nbsp;
-    <DataGrid rows={GetRows(works)} columns={columns} autoHeight={true} onRowClick={openWork}/>
+    <DataGrid rows={GetRows(works)} columns={columns} autoHeight={true} onRowClick={openWork} loading={worksLoading}/>
     &nbsp;
     <Modal
       open={open}

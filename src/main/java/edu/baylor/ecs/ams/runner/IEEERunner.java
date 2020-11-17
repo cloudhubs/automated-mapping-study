@@ -66,6 +66,7 @@ public class IEEERunner {
         URI uri = UriComponentsBuilder.fromUriString(baseUrl).
                 queryParam("apikey", apiKey).
                 queryParam("querytext", query).
+                queryParam("max_records", "200").
                 build().toUri();
 
         RestTemplate restTemplate = new RestTemplate();

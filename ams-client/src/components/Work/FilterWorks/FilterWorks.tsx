@@ -39,6 +39,11 @@ const FilterWorks: React.FC<{projectId: number, keywords: string[], keywordsLoad
     setKeywordText(newStr);
   }
 
+  const clearFilter = async() => {
+    setSelectedKeywords(new Set());
+    resetFilter();
+  }
+
 
   return (
     <div>
@@ -79,7 +84,7 @@ const FilterWorks: React.FC<{projectId: number, keywords: string[], keywordsLoad
           </Button>
           <br></br>
           <br></br>
-          <Button onClick={resetFilter} variant="contained" color="default">
+          <Button onClick={clearFilter} variant="contained" color="default">
               Reset Filter
           </Button>
         </Grid>

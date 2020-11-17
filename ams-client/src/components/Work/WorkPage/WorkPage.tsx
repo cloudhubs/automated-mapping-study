@@ -23,6 +23,7 @@ import WorkList from '../WorkList/WorkList';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import Box from '@material-ui/core/Box/Box';
+import Link from '@material-ui/core/Link/Link';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,16 +42,20 @@ const WorkPage: React.FC = () => {
   const [filteredWorks, setFilteredWorks] = useState<Work[]>([]);
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordsLoading, setKeywordsLoading] = useState<boolean>(false);
+  const [worksLoading, setWorksLoading] = useState<boolean>(false);
 
   // functions
   const loadData = async (projectId: number) => {
     setKeywordsLoading(true); // keywords not yet loaded
+    setWorksLoading(true);
     const res = await ProjectService.getProjectWorks(projectId);
     setWorks(res);
     setFilteredWorks(res);
     extractKeywords(res);
+    setWorksLoading(false);
   };
-  const addQuery = async (query: string) => {
+  const addQuery = async (query: string, sites: Map<String,boolean>) => {
+    // let sitesToUse = 
     await ProjectService.addQueryToProject(id, query);
     loadData(id);
   }
@@ -69,8 +74,13 @@ const WorkPage: React.FC = () => {
     setFilteredWorks(works);
   }
   const extractKeywords = async (works: Work[]) => {
-    setKeywords(works.flatMap(w => w.extractedKeywords.map(k => k.keyword)).sort().getUnique());
+    setKeywords(works.flatMap(w => w.abstractKeywords.map(k => k.keyword)).sort().getUnique());
+    // setKeywords(works.flatMap(w => w.extractedKeywords.map(k => k.keyword)).sort().getUnique());
     setKeywordsLoading(false); // done loading keywords
+  }
+
+  const exportKeywords = async () => {
+    ProjectService.exportKeywords(id);
   }
 
   // load data on component load
@@ -117,8 +127,24 @@ const WorkPage: React.FC = () => {
           <FilterWorks projectId={id} keywords={keywords} keywordsLoading={keywordsLoading} filter={filter} resetFilter={resetFilter} />
         </AccordionDetails>
       </Accordion>
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="filter-panel-content"
+          id="filter-panel-header"
+        >
+          <Typography>Export</Typography>
+        </AccordionSummary>
+        <AccordionDetails className={classes.details}>
+          <Typography>
+            Export this project's keywords as a CSV.
+          </Typography>
+          <Link rel="noopener noreferrer" href={"localhost:8080/project/" + id + "/exportkeywords"} target="_blank">Export</Link>
+        </AccordionDetails>
+      </Accordion>
+      
 
-      <WorkList works={filteredWorks} />
+      <WorkList works={filteredWorks} worksLoading={worksLoading}/>
     </div>
   );
 };

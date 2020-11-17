@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 public class QueryController {
     private final QueryService queryService;
 
-    @PostMapping("/query")
-    public List<MetadataModel> query(@RequestParam String query) throws Exception {
-        List<BaseModel> models = queryService.runQuery(query);
-        List<MetadataModel> results = models.stream().map(m -> m.toMetadata()).collect(Collectors.toList());
-        return results;
-    }
+//    @PostMapping("/query")
+//    public List<MetadataModel> query(@RequestParam String query) throws Exception {
+//        List<BaseModel> models = queryService.runQuery(query);
+//        List<MetadataModel> results = models.stream().map(m -> m.toMetadata()).collect(Collectors.toList());
+//        return results;
+//    }
 
     @PostMapping("/queryexport")
     public String queryAndExport(@RequestBody QueryRequest request) {

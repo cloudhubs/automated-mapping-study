@@ -8,18 +8,21 @@ import edu.baylor.ecs.ams.repository.KeywordRepository;
 import edu.baylor.ecs.ams.repository.MetadataRepository;
 import edu.baylor.ecs.ams.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -105,4 +108,33 @@ public class ProjectService {
     return projectRepository.findAll();
   }
 
+  public byte[] exportProjectKeywordsCsv(Long id) {
+    StringWriter writer = new StringWriter();
+    List<MetadataModel> works = getProjectWorks(id);
+    try (CSVPrinter printer = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+      works.forEach(w -> {
+        try {
+          printer.print(w.getDoi() != null ? w.getDoi() : w.getDocumentTitle());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        w.getAbstractKeywords().forEach(k -> {
+          try {
+            printer.print(k.getKeyword());
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
+        try {
+          printer.println();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      });
+      return writer.toString().getBytes(StandardCharsets.UTF_8);
+    } catch (IOException ex) {
+      ex.printStackTrace();
+    }
+    return new byte[0];
+  }
 }
