@@ -46,7 +46,7 @@ public class IEEEModel extends BaseModel {
     @Override
     public MetadataModel toMetadata() {
         MetadataModel work = new MetadataModel();
-        work.setDoi(DOI);
+        work.setDoi(DOI != null && !DOI.isBlank() ? DOI : documentTitle);
         work.setAuthors(String.join(";", authors));
         work.setDocumentTitle(documentTitle);
         work.setPublicationTitle(publicationTitle);

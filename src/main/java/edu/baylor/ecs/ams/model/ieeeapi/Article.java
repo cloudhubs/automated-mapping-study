@@ -122,7 +122,7 @@ public class Article extends BaseModel {
     public MetadataModel toMetadata() {
         MetadataModel work = new MetadataModel();
 
-        work.setDoi(doi);
+        work.setDoi(doi != null && !doi.isBlank() ? doi : title);
         work.setDocumentTitle(title);
         work.setPublicationTitle(publicationTitle);
         work.setDate(conferenceDates);
