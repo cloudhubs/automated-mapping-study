@@ -19,41 +19,42 @@ There are a couple prerequisites to cover before running.
 
 Download the `opennlp` trained models for sentence detection and part-of-speech tagging. You can find these two models (trained on various languages) on [opennlp's model page](http://opennlp.sourceforge.net/models-1.5/). For example, you could use the English versions of the [sentence detection](http://opennlp.sourceforge.net/models-1.5/en-sent.bin) and [POS-tagger](http://opennlp.sourceforge.net/models-1.5/en-pos-maxent.bin) models. You'll specify the file paths to these models in the Runner.java.
 
+#### API Keys
+
+Add following API keys as environment variables:
+
+```
+export IEEE_API_KEY= ...
+export SD_API_KEY= ...
+```
+
+If API keys are not defined, then Selenium will be used to collect papers.
+
+## Run database using Docker
+
+```
+$ docker run -p 5432:5432 -e POSTGRES_USER=amsdev -e POSTGRES_PASSWORD=amsdev -e POSTGRES_DB=ams postgres
+```
+
 ## Run project
 
 ```
 $ mvn spring-boot:run
 ```
 
-```
-$ curl --request POST \
-    --url 'http://localhost:8080/query?query=microservice' \
-    --header 'content-type: application/json'
-```
-
 ## Query export endpoint
 
-`POST` to `localhost:8080/queryexport` with the JSON payload (note the escaped double quotes in the query!):
+`POST` to `localhost:8080/queryexport` with the JSON payload:
 
 ```
 {
-    "query" : "(((\"All Metadata\":Mapping Study) OR \"All Metadata\":Literature Review) AND \"All Metadata\":tool)",
+    "query" : "abstract: ('mapping study' OR 'literature review') AND title: tool",
     "downloadPapers" : false
 }
 ```
 
-Of course, switch downloadPapers to `true` to download the PDFs of all the results.
-
-If you use cURL:
-
-```
-curl --location --request POST 'localhost:8080/queryexport' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "query" : "(((\"All Metadata\":Mapping Study) OR \"All Metadata\":Literature Review) AND \"All Metadata\":tool)",
-    "downloadPapers" : false
-}'
-```
+- Available scope specifiers: `title`, `abstract`, `keywords`, `fulltext`, and `all`
+- Multiple words must be quoted e.g. `'mapping study'`
 
 ## Authors
 
