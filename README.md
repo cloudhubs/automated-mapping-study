@@ -42,6 +42,10 @@ $ docker run -p 5432:5432 -e POSTGRES_USER=amsdev -e POSTGRES_PASSWORD=amsdev -e
 $ mvn spring-boot:run
 ```
 
+## Query endpoint
+
+`POST http://localhost:8080/query?query=abstract: (container OR docker) AND title: microservice`
+
 ## Query export endpoint
 
 `POST` to `localhost:8080/queryexport` with the JSON payload:
