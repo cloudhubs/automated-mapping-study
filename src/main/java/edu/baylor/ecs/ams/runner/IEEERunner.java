@@ -50,10 +50,10 @@ public class IEEERunner {
     public static void runQueryExport(String query, boolean downloadFiles) throws InterruptedException, IOException {
         List<BaseModel> models = runQuery(query);
 
-        // Create IEEE Parsers for downloaded PDFs
-        IEEEPDFParser pdfParser = new IEEEPDFParser();
-
         if (downloadFiles) {
+            // Create IEEE Parsers for downloaded PDFs
+            IEEEPDFParser pdfParser = new IEEEPDFParser();
+            
             for (BaseModel model : models) {
                 pdfParser.downloadPDF(model);
             }
